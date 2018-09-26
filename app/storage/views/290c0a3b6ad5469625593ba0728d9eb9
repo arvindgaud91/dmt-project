@@ -1,0 +1,272 @@
+<?php use Acme\Auth\Auth; ?>
+
+<?php $__env->startSection('content'); ?>
+<div ng-controller="reportsCtrl" class="head-weight">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-border-color panel-border-color-primary">
+                <div class="panel-heading panel-heading-divider">Transaction Reports</div>
+                <br>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="hpanel">
+                                <div class="panel-heading">
+                                    DEPOSIT
+                                </div>
+                                <div class="panel-body">
+                                    <div>
+                                        <div id="deposit-chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="hpanel">
+                                <div class="panel-heading">
+                                    WITHDRAW
+                                </div>
+                                <div class="panel-body">
+                                    <div>
+                                        <div id="withdraw-chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="hpanel">
+                                <div class="panel-heading">
+                                    BALANCE ENQUIRY
+                                </div>
+                                <div class="panel-body">
+                                    <div>
+                                        <div id="balance-enquiry-chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button ng-click="exportFile('aeps-transactions', transactions)" class="btn btn-primary" style="float: right;"><i class="fa fa-file-excel-o"></i> Export as excel</button>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-default panel-table">
+                                <!-- <div class="panel-heading">
+                                     <div class="tools"><span class="icon mdi mdi-more-vert"></span></div> 
+                                     <div class="title">Last Five Transactions</div>
+                                </div> -->
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered" ng-show="transactions.length>0">
+                                        <thead>
+                                            <tr>
+                                                <th>Transaction ID</th>
+                                                <th>Transaction Date</th>
+                                                <th>Service</th>
+                                                <th>Aadhaar No</th>
+                                                <th>Bank</th>
+                                                <th>RRN Number</th>
+                                                <th>Amount</th>
+                                                <th ng-hide="<?php echo Auth::user()->vendor->master_wallet_id; ?> =='1'">Commission Amount</th>
+                                                <th ng-hide ="<?php echo Auth::user()->vendor->master_wallet_id; ?> =='1'">Bank Balance</th>
+                                                <th ng-hide ="<?php echo Auth::user()->vendor->master_wallet_id; ?> =='1'">Wallet Balance</th>
+                                                <th>Status</th>
+                                                <th>Remark</th>
+                                                <th>Custome Name</th>
+                                                <th>Customer Phone No</th>
+                                                <th>Receipt</th>
+                                                
+                                                <th>Refund</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody class="no-border-x">
+                                            <tr ng-repeat="transaction in transactions">
+                                                <td>{{transaction.tx_id}}</td>
+                                                <td>{{transaction.tx_date | date: 'medium'}}</td>
+                                                <td>{{transaction.service}}</td>
+                                                <td>{{transaction.aadhar_no}}</td>
+                                                <td>{{transaction.bank_name}}</td>
+                                                <td>{{transaction.rrn_no}}</td>
+                                                <td>{{transaction.amount}}</td>
+                                                <td ng-hide ="<?php echo Auth::user()->vendor->master_wallet_id; ?> == 1">{{transaction.commission_amount}}</td>
+                                                <td ng-hide ="<?php echo Auth::user()->vendor->master_wallet_id; ?> == 1">{{transaction.balance}}</td>
+                                                <td ng-hide ="<?php echo Auth::user()->vendor->master_wallet_id; ?> == 1">{{transaction.wallet_balance}}</td>
+                                                <td>{{transaction.status}}</td>
+                                                <td>{{transaction.remarks}}</td>
+                                                <td>{{transaction.cust_name}}</td>
+                                                <td>{{transaction.cust_phone_no}}</td>
+                                                <td><a class="btn btn-xs btn-success" type="submit" ng-href="{{transaction.receipt_link}}"><i class="fa fa-file-text-o"></i> Receipt</a></td>
+                                                
+                                                <td ng-show="transaction.refund_status=='1'"><button ng-disabled="isDisabled" ng-show="transaction.refund_status=='1'" ng-if="transaction.refund_status=='1'" class="btn btn-xs btn-success" type="submit" ng-href="refund/otp/{{transaction.tx_id}}"  ng-click="getOTP(transaction.tx_id)"><i class="fa fa-file-text-o"></i>Get Refund</button></td>
+
+                                                <td ng-show="transaction.refund_status=='2'"><button ng-disabled="isDisabled" ng-show="transaction.refund_status=='2'" ng-if="transaction.refund_status=='2'" class="btn btn-xs btn-success"><i class="fa fa-file-text-o"></i> Refund Processed</button></td>
+                                                 
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <?php echo $txObjs->appends(getAppendData())->links(); ?>
+
+                                    <?php 
+                                        function getAppendData ()
+                                        {
+                                            $append = [];
+                                            if (Input::has('fromDate') && Input::has('toDate')) {
+                                                $append['fromDate'] = Input::get('fromDate', '');
+                                                $append['toDate'] = Input::get('toDate', '');
+                                            }
+                                            return $append;
+                                        }
+                                    ?>
+                                    <h5 ng-hide="transactions.length > 0">No transactions conducted yet. Click on AEPS to begin your first transaction.</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                        <div class="widget widget-calendar">
+                            <div id="calendar-widget"></div>
+                        </div>
+                    </div>
+                    <!-- End Row -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('javascript'); ?>
+<script>
+    var transactions = <?php echo $transactions; ?>
+
+
+</script>
+<script>
+angular.module('DIPApp')
+.controller('reportsCtrl', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
+    $scope.transactions = transactions.map(formatTransaction)
+    console.log($scope.transactions)
+    $scope.exportFile = exportFile
+    
+    $scope.balEnqUnsuccess = <?php echo $balEnqUnsuccess; ?>
+
+    $scope.balEnqSuccess = <?php echo $balEnqSuccess; ?>
+
+    $scope.depositUnsuccess = <?php echo $depositUnsuccess; ?>
+
+    $scope.depositSuccess = <?php echo $depositSuccess; ?>
+
+    $scope.withdrawUnsuccess = <?php echo $withdrawUnsuccess; ?>
+
+    $scope.withdrawSuccess = <?php echo $withdrawSuccess; ?>
+
+    $scope.getOTP = getOTP
+
+    function getOTP (transaction_id) {
+      $scope.isDisabled=true
+        $http.post('/refund/otp/'+transaction_id)
+          .then(function (msg) {
+            if (msg.data.code == 2) {
+              sweetAlert('Success', 'OTP Send succefully', 'success')
+               setTimeout(function () {
+                      window.location.href = '/refund/otp/'+transaction_id+'/form'
+                }, 1500)
+            }
+          }, function (err) {
+           $scope.isDisabled=false
+            if (err.data.code == 1) {
+              sweetAlert('Error', 'Phone number is not registered with us', 'error')
+              return
+            }
+            
+            sweetAlert('Error', 'Something went wrong. Try again later.', 'error')
+          })
+    }
+    function formatTransaction (tx) {
+        tx.tx_date = new Date(tx.tx_date.date)
+        return tx
+    }
+
+        function exportFile (filename, data) {
+          $http.post('/export/excel', {name: filename, rows: data.map(function (obj) {
+        
+            newObj = {
+                'Transaction_ID': obj.tx_id,
+                'Transaction_Date': $filter('date')(obj.tx_date, 'medium'),
+                'Service': obj.service ,
+                'Aadhaar_No': obj.aadhar_no ,
+                'Bank': obj.bank_name,
+                'RRN Number': obj.rrn_no,
+                'Amount': obj.amount,
+                'Commission_Amount': obj.commission_amount,
+                'Bank_Balance': obj.balance,
+                'Wallet_Balance': obj.wallet_balance,
+                'Status': obj.status,
+                'Remark': obj.remarks,
+                'Customer_Name':obj.cust_name,
+                'Customer_Phone_No':obj.cust_phone_no
+            }
+            
+            return newObj
+          })}).then(function (data) {
+            window.location.href = '/exports/'+data.data+'.xls'
+          }, console.log)
+        }
+
+
+    function fail (err) {
+        
+        sweetAlert('Error', 'Something went wrong', 'error')
+    }
+                            
+        c3.generate({
+            bindto: '#deposit-chart',
+            data:{
+                columns: [
+                    ['success', $scope.depositSuccess],
+                    ['unsuccess', $scope.depositUnsuccess]
+                ],
+                colors:{
+                    success: '#62cb31',
+                    unsuccess: '#FF0000'
+                },
+                type : 'pie'
+            }
+        });
+
+        c3.generate({
+            bindto: '#withdraw-chart',
+            data:{
+                columns: [
+                    ['success', $scope.withdrawSuccess],
+                    ['unsuccess', $scope.withdrawUnsuccess]
+                ],
+                colors:{
+                    success: '#62cb31',
+                    unsuccess: '#FF0000'
+                },
+                type : 'pie'
+            }
+        });
+
+        c3.generate({
+            bindto: '#balance-enquiry-chart',
+            data:{
+                columns: [
+                    ['success', $scope.balEnqSuccess],
+                    ['unsuccess', $scope.balEnqUnsuccess]
+                ],
+                colors:{
+                    success: '#62cb31',
+                    unsuccess: '#FF0000'
+                },
+                type : 'pie'
+            }
+        }); 
+}])
+</script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

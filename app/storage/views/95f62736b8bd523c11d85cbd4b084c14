@@ -1,0 +1,133 @@
+<?php use Acme\Auth\Auth; ?>
+
+<?php $__env->startSection('content'); ?>
+  <div ng-controller="WalletRequestCtrl" class="head-weight">
+    <div class="row">
+      <div>
+        <div class="panel panel-default panel-border-color panel-border-color-primary hpanel hgreen">
+          <div class="panel-heading panel-heading-divider"><h4 style="margin:0;">Wallet Credit Request</h4>
+              <!--<span class="panel-subtitle">Use to credit your wallet</span>-->
+              <div><small>Use to credit your wallet</small></p>
+          </div>
+          <div class="panel-body">
+            <!-- Start row -->
+            <div class="row">
+                <div class="" role="alert">
+                  <p><strong><small>ACCOUNT: DIGITAL INDIA PAYMENTS LIMITED</small></strong></p>
+                  <p><small>BANK : ICICI BANK LIMITED</small></p>
+                  <p><small>BRANCH : CIBD MUMBAI BRANCH</small></p>
+                  <p><small>ACCOUNT NO : 039305008825</small></p>
+                  <p><small>IFSC : ICIC0000393</small></p>
+                </div>
+            </div>
+          </div>
+          <!-- End row -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+            <div class="col-md-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+<!--                  <div class="tools"><span class="icon mdi mdi-more-vert"></span></div> Hidden by PR -->
+                  <div class="title">Wallet Credit Request Form</div>
+                </div>
+                <div class="panel-body table-responsive">
+                  <form class="form-signin" name="balanceRequestFrm" ng-submit="submit(balanceRequest)" novalidate>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="control-label"><small>Amount<font color="red"> * (Required)</font></small></label>
+                          <input type="text" ng-model="balanceRequest.amount" class="form-control" name="amount" placeholder="ENTER AMOUNT" required isnumber>
+                          <p ng-show="balanceRequestFrm.$submitted && (balanceRequestFrm.amount.$invalid || invalidAmount(balanceRequest.amount))" class="err-mark">Please enter an amount between 100 and 2500000.</p>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="control-label" for="mode"><small>Select Mode of Transfer</small></label>
+                          <select ng-options="key as value for (key, value) in modeOfTransferDictS" ng-model="balanceRequest.transfer_mode" class="form-control" id="mode" name="mode" required>
+                            <option value="">SELECT OPTION</option>
+                          </select>
+                          <p ng-show="balanceRequestFrm.$submitted && balanceRequestFrm.mode.$invalid" class="err-mark">Please select a mode of transfer.</p>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="control-label" for="bank"><small>Select Bank Account</small></label>
+                          <select ng-options="key as value for (key, value) in walletBanks" ng-model="balanceRequest.bank" class="form-control" id="bank" name="bank" required>
+                            <option value="">SELECT BANK</option>
+                          </select>
+                          <p ng-show="balanceRequestFrm.$submitted && balanceRequestFrm.bank.$invalid" class="err-mark">Please select a bank.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="control-label"><small>Branch</small></label>
+                          <input type="text" ng-model="balanceRequest.branch" class="form-control" name="branch" placeholder="DEPOSIT BRANCH" >
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="control-label"><small>Reference Number<font color="red"> * (Required)</font></small></label>
+                          <input type="text" class="form-control" ng-model="balanceRequest.reference_number" name="reference_number" placeholder="REFERENCE NUMBER" required>
+                          <p ng-show="balanceRequestFrm.$submitted && balanceRequestFrm.reference_number.$invalid" class="err-mark">Please enter the reference number.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-success" name="btn-credit-request"><small><i class="glyphicon glyphicon-ok"></i>&nbsp;SUBMIT REQUEST</small></button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Row -->
+  </div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('javascript'); ?>
+<script>
+  angular.module('DIPApp')
+    .controller('WalletRequestCtrl', ['$scope', '$http', function ($scope, $http) {
+
+      //window.s = $scope
+
+      $scope.modeOfTransferDictS = <?php echo json_encode(Config::get('dictionary.MODE_OF_TRANSFER')); ?>
+
+      $scope.walletBanks = <?php echo json_encode(Config::get('dictionary.WALLET_BANKS')); ?>
+
+
+      $scope.submit = submit
+      $scope.invalidAmount = invalidAmount
+
+      function submit (balanceRequest) {
+        if ($scope.balanceRequestFrm.$invalid || invalidAmount(balanceRequest.amount)) return
+        req = Object.assign(balanceRequest, {user_id: $scope.activeUserProfile.id})
+        
+        $http.post('/api/v1/wallets/balance-requests', req)
+        .then(data => {
+          toastr.success("Successfully requested balance.")
+          location.href = "/"
+        }, fail)
+      }
+
+      function invalidAmount (amount) {
+        return amount >= 100 && amount <= 2500000 ? false : true
+      }
+
+      function fail (err) {
+        
+        sweetAlert('Error', 'Something went wrong', 'error')
+      }
+    }])
+</script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,133 @@
+<?php use Acme\Auth\Auth;
+  $user = Auth::user();
+?>
+
+<?php $__env->startSection('content'); ?>
+<div ng-controller="RequestCtrl" class="head-weight">
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default panel-border-color panel-border-color-primary">
+      <div class="panel-heading panel-heading-divider">
+      <div class="row">
+        <div class="col-md-8">
+          <h3>Incoming Request</h3>
+        </div>
+        <div class="col-md-4 form-group">
+          <select class="form-control" ng-model="requestType" ng-change="fetchRequests(requestType)">
+            <option value=0 >Pending</option>
+            <option value=1>Accepted</option>
+            <option value=2>Rejected</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          
+          <a href="/wallets/export-wallet-request-data/{{ activeUserProfile.id }}" class="btn btn-primary btn-sm">Export All Data</a>
+          
+          <br><br>
+        </div>
+      </div>
+      </div>
+      <div class="panel-body">
+        <form  style="border-radius: 0px;" class="form-horizontal group-border-dashed">
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table table-hover table-bordered">
+                <thead>
+                  <tr>
+                    <th ng-show="type == 2">AGENTS</th>
+                    <th ng-show="type == 3">DISTRIBUTORS</th>
+                    <th>MOBILE NO</th>
+                    <th ng-show="type == 2">CSR ID</th>
+                    <th>AMOUNT</th>
+                    <th>REMARK</th>
+                     <th>REQUESTED AT</th>
+                    <th ng-show="requestType == 0">ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="request in requests">
+                    <td>{{request.user['name']}}</td>
+                    <td>{{request.user['phone_no']}}</td>
+                    <td ng-show ="type == 2">{{request.user.vendor_details.csr_id}}</td>
+                    <td>{{request.amount}}</td>
+                    <td>{{request.remarks}}</td>
+                    <td>{{request.created_at}}</td>
+                    <td ng-show="requestType == 0">
+                      <button ng-click="approve(request, $index)" class="btn btn-xs btn-success"  ng-disabled="approve_disable">Approve</button>
+                      <button ng-click="reject(request, $index)" class="btn btn-xs btn-danger">Reject</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('javascript'); ?>
+<script>
+  angular.module('DIPApp')
+    .controller('RequestCtrl', ['$scope', '$http', function ($scope, $http) {
+      //window.s = $scope
+    $scope.approve = approve;
+    $scope.requestType = '0';
+    $scope.reject = reject;
+    $scope.checkBalance = checkBalance;
+    $scope.type = $scope.activeUserProfile.vendor_details.type;
+    $scope.requests = <?php echo json_encode($requests); ?>
+
+    $scope.availBalance = <?php echo $user->vendor->balance; ?>;
+    $scope.fetchRequests = fetchRequests
+
+
+     function fetchRequests (rt) {
+        var status = rt == 1 ? 'approved' : rt == 2 ? 'rejected' : 'pending'
+        $http.get(`/api/v1/users/${$scope.activeUserProfile.id}/actions/incoming-balance-requests?status=${ status }`)
+        .then(data => {
+              $scope.requests = data.data
+              
+          }, fail)
+      }
+
+     function checkBalance (amt) {
+      return $scope.availBalance < amt ? false : true
+    }
+    
+    function approve(request, index) {
+      //$scope.approve_disable=true
+      //$scope.approve_disable=false;
+      if(! confirm('Are you sure?'))  return;
+      if (! checkBalance(request.amount)) return sweetAlert('Error', 'Insufficient Balance', 'error')
+      var acceptUrl = $scope.type == 3 ?  `/api/v1/wallets/balance-requests/${request.id}/from-super-distributors/actions/approve` : $scope.type == 2 ?  `/api/v1/wallets/balance-requests/${request.id}/from-distributors/actions/approve` : ''
+      $http.post(acceptUrl)
+      .then(function(data){
+          $scope.requests.splice(index, 1);
+          toastr.success('Approved');
+          location.reload();
+      }, fail);
+    };
+
+    function reject (request, index) {
+       if(! confirm('Are you sure?')) return;
+      var rejectUrl = $scope.type == 3 ?  `/api/v1/wallets/balance-requests/${request.id}/from-super-distributors/actions/reject` : $scope.type == 2 ?  `/api/v1/wallets/balance-requests/${request.id}/from-distributors/actions/reject` : ''
+      $http.post(rejectUrl)
+      .then(function(data){
+          $scope.requests.splice(index, 1)
+          toastr.success('Rejected');
+      }, fail);
+    }
+
+    function fail (err) {
+        
+        sweetAlert('Error', 'Something went wrong', 'error')
+      }
+    }])
+</script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

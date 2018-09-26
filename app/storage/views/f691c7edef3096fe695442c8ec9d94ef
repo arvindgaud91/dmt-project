@@ -1,0 +1,490 @@
+<?php use Acme\Auth\Auth; ?>
+
+<?php $__env->startSection('content'); ?>
+<div ng-controller="HomeCtrl" class="head-weight animate-panel">
+    <div class="row">
+            <div class="col-lg-12 text-center welcome-message">
+
+         <?php $domain_data = preg_replace('#^https?://#', '', Request::root()); ?>
+        <?php if($domain_data == 'am-tech.digitalindiapayments.com'): ?>
+            <h2 class="col-md-12 text-center">
+               Welcome to  Am-Tech
+            </h2>
+        <?php elseif($domain_data == 'service.aepsmoney.com'): ?>
+            <h2 class="col-md-12 text-center">
+                 Welcome to AMIABLE COMTRADE AND ONLINE SHOP PVT.LTD
+            </h2>
+        <?php elseif($domain_data == 'aeps.unnayon.in'): ?>
+            <h2>
+                Welcome to UNNAYON CONSULTANCY SERVICES PVT LTD
+            </h2>
+        <?php elseif($domain_data == 'aeps.hamarakendra.com'): ?>
+            <h2>
+               Welcome to IPS e Services Pvt. Ltd.
+            </h2>
+        <?php elseif($domain_data == 'aeps-rl.hamarakendra.com'): ?>
+            <h2>
+               Welcome to IPS e Services Pvt. Ltd.
+            </h2>
+        <?php elseif($domain_data == 'payments.digitalworldpaymentshub.com'): ?>
+            <h2>
+                Welcome to DIGITAL WORLD PAYMENTS HUB
+            </h2>
+        <?php elseif($domain_data == 'aeps.acospay.com'): ?>
+            <h2>
+                Welcome to AMIABLE COMTRADE AND ONLINE SHOP PVT.LTD
+            </h2>
+        <?php elseif($domain_data == 'aeps.himveda.co.in'): ?>
+            <h2>
+                 Welcome to Himveda E-Solution Pvt.Ltd.
+            </h2>
+        <?php elseif($domain_data == 'wallet.reijiro.co.in'): ?>
+            <h2>
+                 Welcome to REIJIRO NETWORKS.
+            </h2>
+        <?php elseif($domain_data == 'rb.myam-tech.com'): ?>
+            <h2></h2>
+        <?php elseif($domain_data == 'rbamtech.digitalindiapayments.com'): ?>
+            <h2></h2>
+        <?php elseif($domain_data == 'samriddhifoundation.net.in'): ?>
+            <h2>SAMRIDDHI FOUNDATION</h2>
+        <?php elseif($domain_data == 'aeps.mysuravi.com'): ?>
+            <h2>Welcome to SURAVI</h2>
+        <?php elseif($domain_data == 'aeps.houseofrecharge.com'): ?>
+            <h2>Welcome to SARVA SUVIDHA KENDRA</h2>
+        <?php else: ?>
+            <h2>
+                Welcome to Digital India Payments Ltd
+            </h2>
+        <?php endif; ?>
+                
+
+                <!-- <p>
+                    Special <strong>Admin Theme</strong> for medium and large web applications with very clean and
+                    aesthetic style and feel.
+                </p> -->
+            </div>
+        </div>
+    <div class="row">
+        <div class="panel-heading">Master Distributor Dashboard</div>
+            
+        <div class="col-lg-4">
+                <div class="hpanel stats">
+                    <div class="panel-body h-200">
+                        <div class="stats-title pull-left">
+                            <h4>Total Distributors</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                           <i class="pe-7s-check fa-4x c-purple"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="flot-chart">
+                            <div class="flot-chart-content" id="flot-income-chart"></div>
+                        </div>
+                        <div class="m-t-xs">
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>
+                                        <span data-toggle="counter" class="number">{{ childCount}}</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="panel-footer">
+                        This is standard panel footer
+                    </div>-->
+                </div>
+            </div>
+        <div class="col-lg-4">
+                    <div class="hpanel stats">
+                        <div class="panel-body h-200">
+                            <div class="stats-title pull-left">
+                                <h4>Total Agents</h4>
+                            </div>
+                            <div class="stats-icon pull-right">
+                               <i class="pe-7s-check fa-4x c-purple"></i>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="flot-chart">
+                                <div class="flot-chart-content" id="flot-income-chart"></div>
+                            </div>
+                            <div class="m-t-xs">
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4>
+                                            <span data-toggle="counter" class="number">{{ agent_count}}</span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="panel-footer">
+                            This is standard panel footer
+                        </div>-->
+                    </div>
+                </div>
+        <div class="col-lg-4">
+                <div class="hpanel stats">
+                    <div class="panel-body h-200">
+                        <div class="stats-title pull-left">
+                            <h4>Total Balance</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="pe-7s-cash fa-4x c-green"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="flot-chart">
+                            <div class="flot-chart-content" id="flot-income-chart"></div>
+                        </div>
+                        <div class="m-t-xs">
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>
+                                        <span data-toggle="counter" class="number">{{ childBalance | currency: 'Rs. '}}</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="panel-footer">
+                        This is standard panel footer
+                    </div>-->
+                </div>
+            </div>
+    </div>
+    <div class="row">
+        <div class="panel-heading">Today's Overview</div>
+            
+        <div class="col-lg-4">
+                <div class="hpanel stats">
+                    <div class="panel-body h-200">
+                        <div class="stats-title pull-left">
+                            <h4>Total Number Of Transactions</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                           <i class="pe-7s-check fa-4x c-purple"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="flot-chart">
+                            <div class="flot-chart-content" id="flot-income-chart"></div>
+                        </div>
+                        <div class="m-t-xs">
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>
+                                        <span data-toggle="counter" class="number">{{ transactions_today}}</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="panel-footer">
+                        This is standard panel footer
+                    </div>-->
+                </div>
+            </div>
+        <div class="col-lg-4">
+                    <div class="hpanel stats">
+                        <div class="panel-body h-200">
+                            <div class="stats-title pull-left">
+                                <h4>Total Amount</h4>
+                            </div>
+                            <div class="stats-icon pull-right">
+                                <i class="pe-7s-cash fa-4x c-green"></i>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="flot-chart">
+                                <div class="flot-chart-content" id="flot-income-chart"></div>
+                            </div>
+                            <div class="m-t-xs">
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4>
+                                            <span data-toggle="counter" class="number">{{ amount_today
+                        | currency: 'Rs. '}}</span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="panel-footer">
+                            This is standard panel footer
+                        </div>-->
+                    </div>
+                </div>
+        <?php
+            $domain_data = preg_replace('#^https?://#', '', Request::root());
+        ?>
+        <?php if(!($domain_data == 'am-tech.digitalindiapayments.com')): ?>
+        <div class="col-lg-4">
+                <div class="hpanel stats">
+                    <div class="panel-body h-200">
+                        <div class="stats-title pull-left">
+                            <h4>Commission Earned</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="pe-7s-cash fa-4x c-green"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="flot-chart">
+                            <div class="flot-chart-content" id="flot-income-chart"></div>
+                        </div>
+                        <div class="m-t-xs">
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>
+                                        <span data-toggle="counter" class="number">{{ distributor_commission_today | currency: 'Rs. '}}</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="panel-footer">
+                        This is standard panel footer
+                    </div>-->
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+    <div class="row">
+        <div class="panel-heading">Weekly Overview</div>
+            
+        <div class="col-lg-4">
+                <div class="hpanel stats">
+                    <div class="panel-body h-200">
+                        <div class="stats-title pull-left">
+                            <h4>Total Number Of Transactions</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                           <i class="pe-7s-check fa-4x c-purple"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="flot-chart">
+                            <div class="flot-chart-content" id="flot-income-chart"></div>
+                        </div>
+                        <div class="m-t-xs">
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>
+                                        <span data-toggle="counter" class="number">{{ transactions_weekly}}</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="panel-footer">
+                        This is standard panel footer
+                    </div>-->
+                </div>
+            </div>
+        <div class="col-lg-4">
+                    <div class="hpanel stats">
+                        <div class="panel-body h-200">
+                            <div class="stats-title pull-left">
+                                <h4>Total Amount</h4>
+                            </div>
+                            <div class="stats-icon pull-right">
+                                <i class="pe-7s-cash fa-4x c-green"></i>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="flot-chart">
+                                <div class="flot-chart-content" id="flot-income-chart"></div>
+                            </div>
+                            <div class="m-t-xs">
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4>
+                                            <span data-toggle="counter" class="number">{{ amount_weekly | currency: 'Rs. '}}</span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="panel-footer">
+                            This is standard panel footer
+                        </div>-->
+                    </div>
+                </div>
+        <?php
+            $domain_data = preg_replace('#^https?://#', '', Request::root());
+        ?>
+        <?php if(!($domain_data == 'am-tech.digitalindiapayments.com')): ?>
+        <div class="col-lg-4">
+                <div class="hpanel stats">
+                    <div class="panel-body h-200">
+                        <div class="stats-title pull-left">
+                            <h4>Commission Earned</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="pe-7s-cash fa-4x c-green"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="flot-chart">
+                            <div class="flot-chart-content" id="flot-income-chart"></div>
+                        </div>
+                        <div class="m-t-xs">
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>
+                                        <span data-toggle="counter" class="number">{{ distributor_commission_weekly | currency: 'Rs. '}}</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="panel-footer">
+                        This is standard panel footer
+                    </div>-->
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php /**
+    <div class="row">
+        <div class="panel-heading">Monthly Overview</div>
+            
+        <div class="col-lg-4">
+                <div class="hpanel stats">
+                    <div class="panel-body h-200">
+                        <div class="stats-title pull-left">
+                            <h4>Total Number Of Transactions</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                           <i class="pe-7s-check fa-4x c-purple"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="flot-chart">
+                            <div class="flot-chart-content" id="flot-income-chart"></div>
+                        </div>
+                        <div class="m-t-xs">
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>
+                                        <span data-toggle="counter" class="number">@{{ transactions_monthly}}</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        This is standard panel footer
+                    </div>
+                </div>
+            </div>
+                <div class="col-lg-4">
+                    <div class="hpanel stats">
+                        <div class="panel-body h-200">
+                            <div class="stats-title pull-left">
+                                <h4>Total Amount</h4>
+                            </div>
+                            <div class="stats-icon pull-right">
+                                <i class="pe-7s-cash fa-4x c-green"></i>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="flot-chart">
+                                <div class="flot-chart-content" id="flot-income-chart"></div>
+                            </div>
+                            <div class="m-t-xs">
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h4>
+                                            <span data-toggle="counter" class="number">@{{ amount_monthly | currency: 'Rs. '}}</span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="panel-footer">
+                            This is standard panel footer
+                        </div>-->
+                    </div>
+                </div>
+        <?php
+            $domain_data = preg_replace('#^https?://#', '', Request::root());
+        ?>
+        @if(!($domain_data == 'am-tech.digitalindiapayments.com'))
+        <div class="col-lg-4">
+                <div class="hpanel stats">
+                    <div class="panel-body h-200">
+                        <div class="stats-title pull-left">
+                            <h4>Commission Earned</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="pe-7s-cash fa-4x c-green"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="flot-chart">
+                            <div class="flot-chart-content" id="flot-income-chart"></div>
+                        </div>
+                        <div class="m-t-xs">
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>
+                                        <span data-toggle="counter" class="number">@{{ distributor_commission_monthly | currency: 'Rs. '}}</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="panel-footer">
+                        This is standard panel footer
+                    </div>-->
+                </div>
+            </div>
+        @endif
+    </div>
+    **/ ?>
+</div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('javascript'); ?>
+<script>
+angular.module('DIPApp')
+.controller('HomeCtrl', ['$scope', '$http', function ($scope, $http) {
+
+window.s = $scope;
+$scope.agent_count=<?php echo $agent_count; ?>
+
+$scope.childCount = <?php echo $childCount; ?>
+
+$scope.childBalance = <?php echo $childBalance; ?>
+
+
+
+$scope.transactions_today= <?php echo $transactions_today; ?>
+
+$scope.amount_today= <?php echo $amount_today; ?>
+
+$scope.distributor_commission_today= <?php echo $distributor_commission_today; ?>
+
+
+$scope.transactions_weekly= <?php echo $transactions_weekly; ?>
+
+$scope.amount_weekly= <?php echo $amount_weekly; ?>
+
+$scope.distributor_commission_weekly= <?php echo $distributor_commission_weekly; ?>
+
+
+$scope.transactions_monthly= <?php echo $transactions_monthly; ?>
+
+$scope.amount_monthly= <?php echo $amount_monthly; ?>
+
+$scope.distributor_commission_monthly= <?php echo $distributor_commission_monthly; ?>
+
+}])
+</script>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

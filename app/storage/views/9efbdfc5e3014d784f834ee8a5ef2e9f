@@ -1,0 +1,74 @@
+<?php use Acme\Auth\Auth;
+      use Carbon\Carbon;
+  $user = Auth::user();
+  $yesterday = Carbon::yesterday();
+ ?>
+
+<?php $__env->startSection('content'); ?>
+<div ng-controller="SuperDistributorsCtrl" class="head-weight">
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default panel-border-color panel-border-color-primary">
+      <div class="panel-heading panel-heading-divider">SuperDistributor Commission Details for <?php echo $yesterday->format('d-M-Y');?></div>
+      <div class="panel-body">
+        <form action="" method="post" style="border-radius: 0px;" class="form-horizontal group-border-dashed">
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table table-hover table-bordered">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Transaction Count</th>
+                    <th>Commission Amount</th>
+                    <th style="padding-left: 4%">ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="superdistributor in superDistributors">
+                    <td>{{superDistributorName[superdistributor]}}</td>
+                    <td>{{transaction_count[superdistributor]}}</td>
+                    <td>{{superDistributorCommission[superdistributor]}}</td>
+                    <td>
+                     <button type="button" ng-click="credit(superdistributor)" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    var transaction_count = <?php echo json_encode($transaction_count); ?>
+
+    var superDistributorCommission = <?php echo json_encode($superDistributorCommission); ?>
+
+    var superDistributors = <?php echo json_encode($superDistributors); ?>
+
+    var superDistributorName = <?php echo json_encode($superDistributorName); ?>
+
+  </script>
+</div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('javascript'); ?>
+<script>
+  angular.module('DIPApp')
+    .controller('SuperDistributorsCtrl', ['$scope', '$http', function ($scope, $http) {
+      $scope.transaction_count = transaction_count
+      $scope.superDistributorCommission = superDistributorCommission
+      $scope.superDistributors = superDistributors
+      $scope.credit = credit
+      $scope.superDistributorName = superDistributorName
+
+      function credit (superdistributor) {
+        location.href = `/users/actions/credit-request/vendor/${superdistributor}`
+      }
+
+    }])
+</script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

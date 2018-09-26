@@ -1,0 +1,424 @@
+<?php
+use Acme\Auth\Auth;
+use Acme\Helper\GateKeeper;
+$user = Auth::user();
+?>
+
+<!-- Navigation -->
+
+    <div id="navigation">
+        <div class="profile-picture">
+            <a ng-href="/users/{{ activeUserProfile.id }}/profile">
+                <?php
+                    if($user->vendor->user_profile_url == NULL){
+                    ?>
+                    <img height="76px" src="/images/profile-pic.jpg" class="img-circle m-b" alt="logo">
+                    <?php
+                    }else{
+                    ?>
+                    <img height="76px" src="/upload/profile/<?php echo $user->vendor->user_profile_url; ?>" class="img-circle m-b" alt="logo">
+                    <?php
+                    }
+                ?>
+            </a>
+
+            <div class="stats-label text-color">
+                <span class="font-extra-bold font-uppercase"><?php echo $user->name; ?></span>
+
+                <div class="dropdown">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                        <small class="text-muted">
+                            <?php if( Auth::user()->isAgent()): ?>
+                                Agent
+                            <?php endif; ?>
+                            <?php if( Auth::user()->isDistributor()): ?>
+                                Distributor
+                            <?php endif; ?>
+                            <?php if( Auth::user()->isSuperDistributor()): ?>
+                                Super Distributor
+                            <?php endif; ?>
+                            <?php if( Auth::user()->isSalesExecutive()): ?>
+                                Sales Executive
+                            <?php endif; ?>
+                            <?php if( Auth::user()->isAreaSalesOfficer()): ?>
+                                Area Sales Officer
+                            <?php endif; ?>
+                            <?php if( Auth::user()->isAreaSalesManager()): ?>
+                                Area Sales Manager
+                            <?php endif; ?>
+                            <?php if( Auth::user()->isClusterHead()): ?>
+                                Cluster Head
+                            <?php endif; ?>
+                            <?php if( Auth::user()->isStateHead()): ?>
+                                State Head
+                            <?php endif; ?>
+                            <?php if( Auth::user()->isRegionalHead()): ?>
+                                Regional Head
+                            <?php endif; ?>
+                            <?php if( Auth::user()->isWhiteLabelAdmin()): ?>
+                                White Label Admin
+                            <?php endif; ?>
+                            <?php if( Auth::user()->isChannelPartner()): ?>
+                                Channel Partner
+                            <?php endif; ?>
+                            <b class="caret"></b>
+                        </small>
+                    </a>
+                    <ul class="dropdown-menu animated flipInX m-t-xs">
+                        <!-- <li><a href="contacts.html">Contacts</a></li> -->
+                        <li><a ng-href="/users/{{ activeUserProfile.id }}/profile">Profile</a></li>
+                        <!-- <li><a href="analytics.html">Analytics</a></li> -->
+                        <li class="divider"></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-extra-bold m-b-xs">
+                        <a href="#">
+                            <!-- <i class="icon mdi mdi-balance-wallet"></i><span>&nbsp;-->
+                            <span><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format($user->vendor->balance, 2); ?></span>
+                        </a>
+                    </h4>
+
+                </div>
+            </div>
+        </div>
+        <ul class="nav" id="side-menu">
+            <li>
+                <a href="/"> <span class="nav-label">Dashboard</span></a>
+            </li>
+
+            <?php if(Auth::user()->vendorDetails->type == 3 || Auth::user()->vendorDetails->type == 2): ?>
+                <?php if($user->vendor->inventory_access == 1): ?>
+                    <li class="single">
+                        <a href="/super-dist-payment-details"><span class="nav-label">Payments Form</span></a>
+                    </li>
+                <?php endif; ?>
+            <?php endif; ?>
+            <?php if(Auth::user()->vendorDetails->type == 14): ?>
+                <li>
+                    <a href="/master-super-distributor"> <span class="nav-label">MY SUPER DISTRIBUTORS</span> </a>
+                </li>
+                <?php if($user->vendor->inventory_access == 1): ?>
+                    <li class="single">
+                        <a href="/master-payment-details"><span class="nav-label">Master Payments</span></a>
+                    </li>
+                <?php endif; ?>
+            <?php endif; ?>
+
+
+            <?php if( Auth::user()->isAgent() ): ?>
+            <li>
+                <a href="#"><span class="nav-label">AEPS</span><span class="fa fa-rupee pull-right" ></span> </a>
+                <ul class="nav nav-second-level">
+                    <li><a href="/transactions/transact?type=balance-enquiry">Balance Enquiry</a></li>
+                    <li><a href="/transactions/transact?type=withdraw">Withdraw</a></li>
+                    <?php if(!(Auth::user()->id == 1111 || Auth::user()->id == 1076 || Auth::user()->id == 1701 || Auth::user()->id == 703 || Auth::user()->id == 1819 || Auth::user()->id == 2090 || Auth::user()->id == 1418 || Auth::user()->id == 1839 || Auth::user()->id == 1755  || Auth::user()->id == 582  || Auth::user()->id == 1579  || Auth::user()->id == 1314 || Auth::user()->id == 604 || Auth::user()->id == 618 || Auth::user()->id == 579 || Auth::user()->id == 819  || Auth::user()->id == 366 || Auth::user()->id == 760  || Auth::user()->id == 725  || Auth::user()->id == 1081 || Auth::user()->id == 1151 || Auth::user()->id == 1083 || Auth::user()->id == 713 || Auth::user()->id == 1378 || Auth::user()->id == 1036  || Auth::user()->id == 1318 || Auth::user()->id == 1930 || Auth::user()->id == 1655 || Auth::user()->id == 1919 || Auth::user()->id == 847 || Auth::user()->id == 1399 || Auth::user()->id == 1640 || Auth::user()->id == 885 || Auth::user()->id == 710 || Auth::user()->id == 865 || Auth::user()->id == 920 || Auth::user()->id == 534 || Auth::user()->id == 1862 || Auth::user()->id == 413 || Auth::user()->id == 647 || Auth::user()->id == 1464 || Auth::user()->id == 1315 || Auth::user()->id == 1338 || Auth::user()->id == 197 || Auth::user()->id == 1923 || Auth::user()->id == 794 || Auth::user()->id == 2349 || Auth::user()->id == 1499 || Auth::user()->id ==1506 || Auth::user()->id == 3863 || Auth::user()->id == 2108 || Auth::user()->id == 3751 || Auth::user()->id == 256 || Auth::user()->id == 3760|| Auth::user()->id == 1848 || Auth::user()->id == 2547  || Auth::user()->id == 3285 || Auth::user()->id == 3026  || Auth::user()->id ==5095 ||
+                    Auth::user()->id ==5229  || Auth::user()->id ==5428 || Auth::user()->id ==5479 || Auth::user()->id ==5481  || Auth::user()->id ==5585  || Auth::user()->id ==4288 || Auth::user()->id ==5897  || Auth::user()->id ==5956 || Auth::user()->id ==6279 || Auth::user()->id ==6636 ||  Auth::user()->id ==7674 || Auth::user()->id ==8039 || Auth::user()->id ==8040 || Auth::user()->id ==8043 || Auth::user()->id ==8046 || Auth::user()->id ==8162  || Auth::user()->id ==9450 || Auth::user()->id ==10567  || Auth::user()->id==4424  || Auth::user()->id==5384  || Auth::user()->id==5385  || Auth::user()->id==5858|| Auth::user()->id==5905  || Auth::user()->id==6801  || Auth::user()->id==6815  || Auth::user()->id==7735  || Auth::user()->id==8358  || Auth::user()->id==3349 || Auth::user()->id==5984 || Auth::user()->id==5985 || Auth::user()->id==5986 || Auth::user()->id==5987 || 
+Auth::user()->id==5988 || Auth::user()->id==5989 || Auth::user()->id==5990 || Auth::user()->id==5991 || Auth::user()->id==5992 || 
+Auth::user()->id==5993 || Auth::user()->id==5994 || Auth::user()->id==6009 || Auth::user()->id==6010 || Auth::user()->id==6011 ||
+ Auth::user()->id==6012 || Auth::user()->id==6013 || Auth::user()->id==6014 || Auth::user()->id==6015 || Auth::user()->id==6016 || 
+ Auth::user()->id==6017 || Auth::user()->id==6018 || Auth::user()->id==6024 || Auth::user()->id==6027 || Auth::user()->id==6028 || 
+ Auth::user()->id==6029 || Auth::user()->id==6030 || Auth::user()->id==6039 || Auth::user()->id==6040 || Auth::user()->id==6041 ||
+ Auth::user()->id==6042 || Auth::user()->id==6067 || Auth::user()->id==6068 || Auth::user()->id==6069 || Auth::user()->id==6070 || 
+ Auth::user()->id==6071 || Auth::user()->id==6072 || Auth::user()->id==6073 || Auth::user()->id==6074 || Auth::user()->id==6075 ||
+ Auth::user()->id==6076 || Auth::user()->id==6077 || Auth::user()->id==6078 || Auth::user()->id==6079 || Auth::user()->id==6080 ||
+ Auth::user()->id==6081 || Auth::user()->id==6082 || Auth::user()->id==6083 || Auth::user()->id==6084 || Auth::user()->id==6085 ||
+ Auth::user()->id==6086 || Auth::user()->id==6087 || Auth::user()->id==6088 || Auth::user()->id==6089 || Auth::user()->id==6090 || 
+ Auth::user()->id==6091 || Auth::user()->id==6092 || Auth::user()->id==6093 || Auth::user()->id==6094 || Auth::user()->id==6095 || 
+ Auth::user()->id==6096 || Auth::user()->id==6097 || Auth::user()->id==6098 || Auth::user()->id==6099 || Auth::user()->id==6100 || 
+ Auth::user()->id==6101 || Auth::user()->id==6102 || Auth::user()->id==6103 || Auth::user()->id==6104 || Auth::user()->id==6105 || 
+ Auth::user()->id==6106 || Auth::user()->id==6107 || Auth::user()->id==6108 || Auth::user()->id==6109 || Auth::user()->id==6110 || 
+ Auth::user()->id==6111 || Auth::user()->id==6112 || Auth::user()->id==6113 || Auth::user()->id==6114 || Auth::user()->id==6115 ||
+ Auth::user()->id==6116 || Auth::user()->id==6117 || Auth::user()->id==6118 || Auth::user()->id==6119 || Auth::user()->id==6120 || Auth::user()->id==6121 || Auth::user()->id==6122 || Auth::user()->id==6123 || Auth::user()->id== 6124 || Auth::user()->id== 6125  || Auth::user()->id==4354 || Auth::user()->id == 20654 || Auth::user()->id == 5696)): ?>
+                    <li>
+
+                      <!--   <a href="/transactions/transact?type=deposit">Deposit</a> -->
+
+                              <a href="#"> Deposit NPCI Down Time </a>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+            <?php endif; ?>
+            
+            <?php if(! Auth::user()->isRegionalHead() && ! Auth::user()->isStateHead() && ! Auth::user()->isClusterHead() && ! Auth::user()->isAreaSalesManager() && ! Auth::user()->isAreaSalesManager() && ! Auth::user()->isAreaSalesOfficer() && ! Auth::user()->isSalesExecutive() && ! Auth::user()->isWhiteLabelAdmin() && ! Auth::user()->isChannelPartner() && ! Auth::user()->isMasterDistributor()): ?>
+                <?php if($user->vendor->master_wallet_id != 1): ?>
+                    <li class="">
+                        <a href="#"><span class="nav-label">Request</span><span class="fa fa-download pull-right" ></span> </a>
+                        <ul class="nav nav-second-level">
+                            <?php if( Auth::user()->isAgent() ): ?>
+                            <li><a href="/wallets/balance-request/from-distributor">Distributor </a></li>
+                            <?php elseif( Auth::user()->isDistributor() ): ?>
+                            <li><a href="/wallets/balance-request/from-super-distributor">Super Distributor </a></li>
+                            <?php endif; ?>
+                            <?php
+                              $domain_data = preg_replace('#^https?://#', '', Request::root());
+                            ?>
+                            <?php if( $user->vendor->parent_id != 1024 && !($domain_data == 'am-tech.digitalindiapayments.com') && $user->vendor->parent_id != 8130 && $user->id != 8130 && $user->vendor->parent_id != 16337 && $user->id != 16337 && $user->vendor->parent_id != 16335 && $user->id != 16335 && $user->id != 7975 && $user->vendor->parent_id != 7975 && $user->id != 12215 && $user->vendor->parent_id != 12215 && $user->vendor->user_id != 2011 && $user->vendor->user_id != 17556 && $user->vendor->user_id != 10497 && $user->vendor->parent_id != 2011 && $user->vendor->parent_id != 17556 && $user->vendor->parent_id != 10497 && $user->id != 18482 && $user->vendor->parent_id != 18482 && $user->vendor->parent_id != 18667 && $user->id != 18667  && $user->id != 16590 && !($domain_data == 'am-tech.digitalindiapayments.com') && !($domain_data == 'service.aepsmoney.com') && !($domain_data == 'aeps.unnayon.in') && !($domain_data == 'aeps.hamarakendra.com') && !($domain_data == 'aeps-rl.hamarakendra.com') && !($domain_data == 'payments.digitalworldpaymentshub.com') && !($domain_data == 'aeps.acospay.com') && !($domain_data == 'aeps.himveda.co.in') && !($domain_data == 'wallet.reijiro.co.in') && !($domain_data == 'rb.myam-tech.com') && !($domain_data == 'rbamtech.digitalindiapayments.com') && !($domain_data == 'samriddhifoundation.net.in') && !($domain_data == 'aeps.houseofrecharge.com') && !($domain_data == 'aepspayment.com') && !($domain_data == 'aeps.globalinvestro.com') && !($domain_data == 'aeps.manjilgroup.com') && !($domain_data == 'aeps.lrprch.in') && !($domain_data == 'aadhaaratm.sewapoint.com') && !($domain_data == 'paybank.primagemarketing.com') && !($domain_data == 'aeps.indiapaysolution.com') && !($domain_data == 'aeps.mysuravi.com') && !($domain_data == 'aeps.mydspl.com') && !($domain_data == 'aeps.amenitiesservices.in') && !($domain_data == 'aeps.veeportal.com') && !($domain_data == 'utility.ekiosk.in')): ?>
+
+                                <li><a href="/wallets/balance-request">DIPL</a></li>
+                                <?php if( Auth::user()->isDistributor() || Auth::user()->isSuperDistributor() ): ?>
+                                    <?php if($user->vendor->master_wallet_id != 1): ?>
+                                    <li><a ng-href="/wallets/balance-request/incoming/vendor/{{ activeUserProfile.id }}">INCOMING REQUESTS  </a></li>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+            <?php endif; ?>
+          
+            <?php if( Auth::user()->isSuperDistributor() ): ?>
+                <li>
+                    <a href="/distributors"> <span class="nav-label">MY DISTRIBUTORS</span> </a>
+                </li>
+            <?php endif; ?>
+
+            <?php if( Auth::user()->isDistributor() ): ?>
+                <li>
+                    <a  href="/agents"> <span class="nav-label">MY AGENTS</span></a>
+                </li>
+            <?php endif; ?>
+            <?php if( Auth::user()->isSalesExecutive()): ?>
+            <!-- <li><a href="/bc-agent-registration"><i class="icon mdi mdi-receipt"></i><span>BC Agent Registration</span></a></li> -->
+            <?php endif; ?>
+
+            <?php if(! Auth::user()->isWhiteLabelAdmin() && ! Auth::user()->isChannelPartner()): ?>
+            <li class="">
+                <a href="#"><span class="nav-label">Report</span><span class="fa fa-list-alt pull-right" ></span> </a>
+                <ul class="nav nav-second-level">
+                    <?php if( Auth::user()->isAgent()): ?>
+                        <li><a href="/transaction-reports">Transaction </a></li>
+                         <?php if($user->vendor->master_wallet_id != 1): ?>
+                            <li><a href="/wallet-reports">Wallet  </a></li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    
+                    <?php if( Auth::user()->isDistributor()): ?>
+                        <li><a href="/transaction-report">Transaction </a></li>
+                        <li><a href="/wallet-report">Wallet  </a></li>
+                        <li><a href="/commission-reports">Commission</a></li>
+                    <?php endif; ?>
+                    
+                    <?php if( Auth::user()->isSuperDistributor()): ?>
+                        <li><a href="/transaction-report">Transaction </a></li>
+                        <li><a href="/wallet-report">Wallet  </a></li>
+                        <?php if($user->vendor->inventory_access == 1): ?>
+                            <li><a href="/credit-distributors">Credit My Distributors</a></li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    
+                    <?php if( Auth::user()->isSalesExecutive()): ?>
+                        <!-- <li><a href="/distributor-sales-executive-report">SALES EXECUTIVE </a></li> -->
+                        <!-- <li><a href="/bc-agent-report"><span class="mdi mdi-money-box"></span>&nbsp; BC AGENT</a></li> -->
+                    <?php endif; ?>
+                    
+                    <?php if( Auth::user()->isAreaSalesOfficer()): ?>
+                        <!-- <li><a href="/area-sales-officer-report">SALES OFFICER </a></li> -->
+                    <?php endif; ?>
+                    
+                    <?php if( Auth::user()->isAreaSalesManager()): ?>
+                        <!-- <li><a href="/area-sales-manager-report">AREA SALES MANAGER </a></li> -->
+                    <?php endif; ?>
+                    
+                    <?php if( Auth::user()->isClusterHead()): ?>
+                        <!-- <li><a href="/cluster-head-report">CLUSTER HEAD</a></li> -->
+                        <?php if($user->vendor->inventory_access == 1): ?>
+                            <li><a href="/master-payment-report">PAYMENT REPORT</a></li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    
+                    <?php if( Auth::user()->isStateHead()): ?>
+                        <!-- <li><a href="/state-head-report">STATE HEAD</a></li> -->
+                    <?php endif; ?>
+                    
+                    <?php if( Auth::user()->isRegionalHead()): ?>
+                        <!-- <li><a href="/regional-head-report">REGIONAL HEAD</a></li> -->
+                    <?php endif; ?>
+
+                    
+                    <?php if(Auth::user()->isMasterDistributor()): ?>
+                        <?php if($user->vendor->inventory_access == 1): ?>
+                            <li>
+                                <a href="/master-credit-super-distributor"> <span class="nav-label">Credit Super Distributors</span> </a>
+                            </li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <?php if(Auth::user()->isMasterDistributor() || Auth::user()->isSuperDistributor() || Auth::user()->isDistributor()): ?>
+                        <?php if($user->vendor->inventory_access == 1): ?>
+                            <li><a href="/master-payment-details-report">Payment Report</a></li>
+                            <li><a href="/payment-details-report">Payment Details Report</a></li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    
+                </ul>
+            </li>
+            <?php endif; ?>
+
+                    <?php if($user->vendor->type==14): ?>
+                <li>
+                    <a  href="/master_wallet-report"> <span class="nav-label">Wallet Report</span></a>
+                </li>
+                     
+                    <?php endif; ?>
+
+
+                    <?php if($user->vendor->type==13): ?>
+                <li>
+                    <a  href="/master_wallet-report"> <span class="nav-label">Wallet Report</span></a>
+                </li>
+                     
+                    <?php endif; ?>
+
+            <?php /*        
+            @if(Auth::user()->id == 5469 || Auth::user()->id == 311)
+                    <li class="">
+                        <a href="#"><span class="nav-label">Commission Details</span><span class="fa fa-list-alt pull-right" ></span> </a>
+                        <ul class="nav nav-second-level"> 
+                        <li><a href="/channel-partner-commission-detail-reports?type=CPCommission">Channel Partner Commission Details</a></li>    
+                        <!-- <li><a href="/super-distributor-commission-detail-reports?type=SDCommission">Super Distributor Commission Details</a></li> -->    
+                        </ul>
+                    </li>
+            @endif */?>
+           <?php if( ! Auth::user()->isRegionalHead() && !Auth::user()->isStateHead() && ! Auth::user()->isClusterHead() &&! Auth::user()->isAreaSalesManager() && ! Auth::user()->isAreaSalesOfficer() && ! Auth::user()->isSalesExecutive() && ! Auth::user()->isWhiteLabelAdmin() && ! Auth::user()->isChannelPartner() && ! Auth::user()->isMasterDistributor() &&  Auth::user()->isAgent() || Auth::user()->id==13 || Auth::user()->id==1459 || Auth::user()->id==1924 ): ?>
+
+           <?php if($user->vendor->parent_id != 8130 && $user->vendor->parent_id != 16337 && $user->vendor->parent_id != 16335 && $user->vendor->parent_id !=12215 && $user->vendor->user_id != 2011 && $user->vendor->user_id != 17556 && $user->vendor->user_id != 10497 && $user->vendor->parent_id != 2011 && $user->vendor->parent_id != 17556 && $user->vendor->parent_id != 10497 && $user->id != 18482 && $user->vendor->parent_id != 18482 && $user->id != 18667 && $user->id != 16590 && !($domain_data == 'aeps.mysuravi.com') && !($domain_data == 'rbamtech.digitalindiapayments.com') && !($domain_data == 'rb.myam-tech.com') && !($domain_data == 'aeps.himveda.co.in') && !($domain_data == 'aeps.acospay.com') && !($domain_data == 'payments.digitalworldpaymentshub.com') && !($domain_data == 'aeps-rl.hamarakendra.com') && !($domain_data == 'aeps.hamarakendra.com') && !($domain_data == 'aeps.unnayon.in') && !($domain_data == 'service.aepsmoney.com') && !($domain_data == 'aeps.houseofrecharge.com') && $user->vendor->parent_id != 1024 && $user->id != 1024  && !($domain_data == 'aepspayment.com')  && !($domain_data == 'aeps.globalinvestro.com') && !($domain_data == 'aeps.manjilgroup.com') && !($domain_data == 'aeps.lrprch.in') && !($domain_data == 'aadhaaratm.sewapoint.com') && !($domain_data == 'paybank.primagemarketing.com') && !($domain_data == 'aeps.indiapaysolution.com') && !($domain_data == 'aeps.mydspl.com') && !($domain_data == 'aeps.amenitiesservices.in') && !($domain_data == 'aeps.veeportal.com')  && !($domain_data == 'utility.ekiosk.in')): ?>
+
+<?php if($user->vendor->settlement_service==0): ?>
+          
+            <li class="">
+                <a href="#"><span class="nav-label">SETTLEMENT</span><span class="fa fa-handshake-o pull-right" ></span> </a>
+                <ul class="nav nav-second-level">
+                <?php if($user->vendor->parent_id != 18667): ?>
+                    <li><a href="/settlement">Settlement Details </a></li>
+                <?php endif; ?>
+                    <li><a href="/settlement-request">Settlement Request  </a></li>
+                    <li><a href="/settlement-report">Settlement Report</a></li>
+                </ul>
+            </li>
+
+  
+
+             <?php endif; ?>
+            <?php endif; ?>
+            <?php endif; ?>
+            
+            <?php if((Auth::user()->isDistributor() || Auth::user()->isAgent()) && Session::get('dmt_user')==1 && ($user->vendor->parent_id != 1024 )): ?>
+
+                <?php if($user->vendor->parent_id != 8130 && $user->vendor->parent_id != 16337 && $user->vendor->parent_id != 16335 && $user->vendor->parent_id !=12215 && $user->vendor->user_id != 2011 && $user->vendor->user_id != 17556 && $user->vendor->user_id != 10497 && $user->vendor->parent_id != 2011 && $user->vendor->parent_id != 17556 && $user->vendor->parent_id != 10497 && $user->id != 18482 && $user->id != 16590 && !($domain_data == 'am-tech.digitalindiapayments.com') && !($domain_data == 'service.aepsmoney.com') &&  !($domain_data == 'aeps.unnayon.in') && !($domain_data == 'aeps.hamarakendra.com') &&!($domain_data == 'aeps-rl.hamarakendra.com') && !($domain_data == 'payments.digitalworldpaymentshub.com') && !($domain_data == 'aeps.acospay.com') &&  !($domain_data == 'aeps.himveda.co.in') && !($domain_data == 'wallet.reijiro.co.in') && !($domain_data == 'rb.myam-tech.com') &&  !($domain_data == 'am-tech.digitalindiapayments.com') && !($domain_data == 'aeps.houseofrecharge.com') && !($domain_data == 'aepspayment.com') && !($domain_data == 'aeps.globalinvestro.com') && !($domain_data == 'aeps.manjilgroup.com') && !($domain_data == 'aeps.lrprch.in') && !($domain_data == 'aadhaaratm.sewapoint.com')  && !($domain_data == 'aeps.mydspl.com') && !($domain_data == 'aeps.veeportal.com') && !($domain_data == 'utility.ekiosk.in')): ?> 
+
+
+<?php if($user->vendor->aeps_to_dmt==0): ?>
+
+                    <?php if($user->vendor->portal_id=='V2'): ?>
+             <li class="">
+                <a href="#"><span class="nav-label">TRANSFER TO DMT</span><span class="fa fa-exchange pull-right" ></span> </a>
+                <ul class="nav nav-second-level">
+                    <li><a href="/dmt-transfer-request/<?php echo Auth::user()->id; ?>?type=DMT">AEPS to DMT</a></li>
+                    <li><a href="/dmt-transfer-report?type=DMT">DMT Report  </a></li>
+                    
+                </ul>
+            </li> 
+
+            <?php endif; ?>
+             <?php endif; ?>
+             <?php endif; ?>
+            <?php endif; ?>
+<?php if($user->vendor->prepaid_card_access==1): ?>
+
+ <li class=""><a href="http://cards.digitalindiapayments.com:8008/" target="_blank"><span>Prepaid Card</span>
+              <span class="label label-warning pull-right">NEW</span></a>
+</li>
+
+<?php endif; ?>
+
+
+<?php if($user->id==17556 || $user->id==16335 || $user->id==18482 || $user->id==7975 || $user->id==25268): ?>
+                 <li class="">
+                <a href="#"><span class="nav-label">SETTLEMENT</span><span class="fa fa-handshake-o pull-right" ></span> </a>
+                <ul class="nav nav-second-level">
+                  <li><a href="/settlementwhitelab">Settlement Report</a></li>
+                </ul>
+            </li>
+
+<?php endif; ?>
+
+
+
+
+            
+            <?php if(! Auth::user()->isRegionalHead() && !Auth::user()->isStateHead() && ! Auth::user()->isClusterHead() &&! Auth::user()->isAreaSalesManager() && ! Auth::user()->isAreaSalesOfficer() && ! Auth::user()->isSalesExecutive() && ! Auth::user()->isWhiteLabelAdmin() && ! Auth::user()->isChannelPartner() && ! Auth::user()->isMasterDistributor()): ?>
+            <!-- <li class="parent"><a href="#"><i class="icon mdi mdi-headset"></i><span>SUPPORT</span></a>
+              <ul class="sub-menu">
+                  <li><a ng-href="/ticket"><span class="icon mdi mdi-file">  &nbsp;REQUEST SUPPORT</span></a></li>
+                  
+              </ul>
+            </li> -->
+
+            <?php if($user->vendor->parent_id != 8130 && $user->id != 8130 && $user->vendor->parent_id != 16337 && $user->id != 16337 && $user->vendor->parent_id != 16335 && $user->id != 16335 && $user->vendor->parent_id !=12215 && $user->id != 12215 && $user->vendor->user_id != 2011 && $user->vendor->user_id != 17556 && $user->vendor->user_id != 10497 && $user->vendor->parent_id != 2011 && $user->vendor->parent_id != 17556 && $user->vendor->parent_id != 10497 && $user->id != 18482 && $user->vendor->parent_id != 18482 && $user->vendor->parent_id != 18667 && $user->id != 18667 && $user->id != 16590 && !($domain_data == 'aeps.mysuravi.com') && !($domain_data == 'am-tech.digitalindiapayments.com') && !($domain_data == 'service.aepsmoney.com') && !($domain_data == 'aeps.unnayon.in') && !($domain_data == 'aeps.hamarakendra.com') && !($domain_data == 'aeps-rl.hamarakendra.com') && !($domain_data == 'payments.digitalworldpaymentshub.com') && !($domain_data == 'aeps.acospay.com') && !($domain_data == 'aeps.himveda.co.in') && !($domain_data == 'wallet.reijiro.co.in') && !($domain_data == 'rb.myam-tech.com') && !($domain_data == 'rbamtech.digitalindiapayments.com') &&  !($domain_data == 'samriddhifoundation.net.in') && $domain_data != 'aeps-rl.hamarakendra.com' && $domain_data != 'aeps.hamarakendra.com' && !($domain_data == 'aeps.houseofrecharge.com') && $user->vendor->parent_id != 1024 && $user->id != 1024 && !($domain_data == 'aepspayment.com') && !($domain_data == 'aeps.globalinvestro.com') && !($domain_data == 'aeps.manjilgroup.com') && !($domain_data == 'aeps.lrprch.in') && !($domain_data == 'aadhaaratm.sewapoint.com') && !($domain_data == 'paybank.primagemarketing.com') && !($domain_data == 'aeps.indiapaysolution.com') && !($domain_data == 'aeps.mydspl.com') && !($domain_data == 'aeps.amenitiesservices.in') && !($domain_data == 'aeps.veeportal.com') && !($domain_data == 'utility.ekiosk.in')): ?>
+
+            <li class=""><a href="/ticket"><span>SUPPORT</span>
+              <span class="label label-warning pull-right">NEW</span></a>
+            </li>
+            <?php endif; ?>
+
+
+            <?php if( Auth::user()->isAgent()): ?>
+                <li>
+                    <a href="#"><span class="nav-label">SUPPORT</span><span class="fa fa-support pull-right" ></span> </a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="/add-ticket">Generate Ticket</a></li>
+                        <li><a href="/all-ticket">All Tickets</a></li>
+                    </ul>
+                </li>
+            <?php endif; ?>
+            <!-- <li class=""><a href="/rd-link" target="_blank"><span>RD Browser Link</span></a>
+            </li> -->
+            <!-- <li class="">
+                <a href="#"><span class="nav-label">RD Browser Link</span><span class="fa fa-exchange pull-right" ></span> </a>
+                <ul class="nav nav-second-level">
+                    <li><a href="https://127.0.0.1:8005/rd/capture" target="_blank">Mozilla Browser</a></li>
+                    <li><a href="chrome://flags/#allow-insecure-localhost" target="_blank">Chrome Browser</a></li>
+                </ul>
+            </li> -->
+            <?php endif; ?>
+            
+            <li class="">
+                <a href="#"><span class="nav-label">Settings</span><span class="fa fa-gear pull-right" ></span> </a>
+                <ul class="nav nav-second-level">
+                    <?php if(! Auth::user()->isRegionalHead() && !Auth::user()->isStateHead() && ! Auth::user()->isClusterHead() &&! Auth::user()->isAreaSalesManager() && ! Auth::user()->isAreaSalesOfficer() && ! Auth::user()->isSalesExecutive()): ?>
+                        <li><a ng-href="/users/{{ activeUserProfile.id }}/profile">Profile</a></li>
+                    <?php endif; ?>
+                    <li><a href="/users/<?php echo Auth::user()->id; ?>/reset-session">RESET SESSION</a></li>
+                    <li><a href="/users/<?php echo Auth::user()->id; ?>/actions/change-password">Change Password</a></li>
+                    <?php if(! Auth::user()->isRegionalHead() && !Auth::user()->isStateHead() && ! Auth::user()->isClusterHead() &&! Auth::user()->isAreaSalesManager() && ! Auth::user()->isAreaSalesOfficer() && ! Auth::user()->isSalesExecutive() && ! Auth::user()->isWhiteLabelAdmin() && ! Auth::user()->isChannelPartner() && ! Auth::user()->isMasterDistributor()): ?>
+
+                        <li><a href="#">Biometric Device</a></li>
+                        
+                        <?php if($user->vendor->parent_id != 8130 && $user->id != 8130 && $user->vendor->parent_id != 16337 && $user->id != 16337 && $user->vendor->parent_id != 16335 && $user->id != 16335 && $user->vendor->type !=2 && $user->vendor->parent_id != 12215 && $user->id != 12215 && $user->vendor->user_id != 2011 && $user->vendor->user_id != 17556 && $user->vendor->user_id != 10497 && $user->vendor->parent_id != 2011 && $user->vendor->parent_id != 17556 && $user->vendor->parent_id != 10497 && $user->id != 18482 && $user->vendor->parent_id != 18482 && $user->vendor->parent_id != 18667 && $user->id != 18667 &&  $user->id != 16590 && !($domain_data == 'aeps.mysuravi.com') && !($domain_data == 'am-tech.digitalindiapayments.com') &&  !($domain_data == 'service.aepsmoney.com') && !($domain_data == 'aeps.unnayon.in') && !($domain_data == 'aeps.hamarakendra.com') && !($domain_data == 'aeps-rl.hamarakendra.com') && !($domain_data == 'aeps.acospay.com') && !($domain_data == 'aeps.himveda.co.in') && !($domain_data == 'wallet.reijiro.co.in') && !($domain_data == 'rb.myam-tech.com') && !($domain_data == 'rbamtech.digitalindiapayments.com') && !($domain_data == 'samriddhifoundation.net.in') && !($domain_data == 'aeps.houseofrecharge.com') && !($domain_data == 'aepspayment.com') && !($domain_data == 'aeps.globalinvestro.com') && !($domain_data == 'aeps.manjilgroup.com') && !($domain_data == 'aeps.lrprch.in') && !($domain_data == 'aadhaaratm.sewapoint.com') && !($domain_data == 'paybank.primagemarketing.com') && !($domain_data == 'aeps.indiapaysolution.com') && !($domain_data == 'aeps.mydspl.com') && !($domain_data == 'aeps.amenitiesservices.in') && !($domain_data == 'aeps.veeportal.com')  && !($domain_data == 'utility.ekiosk.in')): ?>
+
+                        <li><a ng-href="/users/{{ activeUserProfile.id }}/certificate">Certificate</a></li>
+                        <?php endif; ?>
+
+                        <?php if($user->vendor->parent_id != 8130 && $user->id != 8130 && $user->vendor->parent_id != 16337 && $user->id != 16337 && $user->vendor->parent_id != 16335 && $user->id != 16335 && $user->vendor->parent_id != 12215 && $user->id != 12215 && $user->vendor->user_id != 2011 && $user->vendor->user_id != 17556 && $user->vendor->user_id != 10497 && $user->vendor->parent_id != 2011 && $user->vendor->parent_id != 17556 && $user->vendor->parent_id != 10497 && $user->id != 18482 && $user->vendor->parent_id != 18482 && $user->vendor->parent_id != 18667 && $user->id != 18667 && $user->id != 16590 && !($domain_data == 'aeps.mysuravi.com') && !($domain_data == 'am-tech.digitalindiapayments.com') &&  !($domain_data == 'service.aepsmoney.com') && !($domain_data == 'aeps.unnayon.in') && !($domain_data == 'aeps.hamarakendra.com') && !($domain_data == 'aeps-rl.hamarakendra.com') && !($domain_data == 'aeps.acospay.com') && !($domain_data == 'aeps.himveda.co.in') && !($domain_data == 'wallet.reijiro.co.in') && !($domain_data == 'rb.myam-tech.com') && !($domain_data == 'rbamtech.digitalindiapayments.com') && !($domain_data == 'samriddhifoundation.net.in') && !($domain_data == 'aeps.houseofrecharge.com') && !($domain_data == 'aepspayment.com') && !($domain_data == 'aeps.globalinvestro.com') && !($domain_data == 'aeps.manjilgroup.com') && !($domain_data == 'aeps.lrprch.in') && !($domain_data == 'aadhaaratm.sewapoint.com') && !($domain_data == 'paybank.primagemarketing.com') && !($domain_data == 'aeps.indiapaysolution.com') && !($domain_data == 'aeps.mydspl.com') && !($domain_data == 'aeps.amenitiesservices.in') && !($domain_data == 'aeps.veeportal.com') && !($domain_data == 'utility.ekiosk.in')): ?>
+                        <li><a href="/download-driver">Driver</a></li>
+                        
+                        <li><a ng-href="/images/customer-guidelines.jpg">CUSTOMER GUIDELINES</a></li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </ul>
+            </li>
+            <?php if($user->vendor->fingerprint_device_id == 1 && $user->vendor->type == 1): ?>
+            <li class="">
+                <a href="#"><span class="nav-label">DEVICE INFO</span><span class="fa fa-gear pull-right" ></span> </a>
+            </li>
+            <?php endif; ?>
+        </ul>
+        </div>
+      </div>
+    </div>
+
+
+  
+

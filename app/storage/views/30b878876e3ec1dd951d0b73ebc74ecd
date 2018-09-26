@@ -1,0 +1,281 @@
+<?php
+use Acme\Auth\Auth;
+use Acme\Helper\GateKeeper;
+$user = Auth::user();
+
+
+$aeps = "#";
+$dmt = "#";
+$cpt = "#";
+$irctc="#";
+$indonepal="#";
+$playwin="#";
+ $kyc = "#";
+$domain_data = preg_replace('#^https?://#', '', Request::root());
+Session::put('dmt_user',0);
+$permissions = ServicePermission::where('user_id', Auth::user()->id)->lists('permission');
+if(null != $permissions){
+  foreach($permissions as $per){
+    if($per =='aeps')
+      $aeps = getenv('AUTH_URL');
+    if($per=='dmt'){
+        if($domain_data == 'aeps.mysuravi.com')
+          {
+            $dmt = 'http://dmt.mysuravi.com:8000';
+          }
+        elseif($domain_data == 'aeps.lrprch.in')
+          {
+            $dmt = 'http://dmt.lrprch.in:8000';
+          }
+        elseif($domain_data == 'aeps.manjilgroup.com')
+          {
+            $dmt = 'http://dmt.manjilgroup.com:8000';
+          }
+        elseif($domain_data == 'aeps.indiapaysolution.com')
+          {
+            $dmt = 'http://dmt.indiapaysolution.com:8000';
+          }
+        elseif($domain_data == 'samriddhifoundation.net.in')
+          {
+            $dmt = 'http://dmt.samriddhifoundation.net.in:8000';
+          }
+        elseif($domain_data == 'paybank.primagemarketing.com')
+          {
+            $dmt = 'http://dmtservices.primagemarketing.com:8000';
+          }
+        elseif($domain_data == 'aeps.amenitiesservices.in')
+          {
+            $dmt = 'http://dmt.amenitiesservices.in:8000';
+          }
+        else
+          {
+            $dmt = getenv('DMT_URL');
+          }
+      Session::put('dmt_user',1);
+    }
+    if($per=='cpt')
+      $cpt = getenv('CP_URL');
+    if($per =='irctc')
+      $irctc = getenv('IRCTC_URL');
+    if($per=='indonepal')
+      $indonepal = getenv('INDONEPAL_URL');
+    if($per=='playwin')
+      $playwin = getenv('PLAYWIN_URL');
+  if($kyc=='kyc')
+    $kyc=getenv('KYC_URL');
+  }
+}
+
+?>    
+
+<div class="header-link hide-menu"><i class="fa fa-bars"></i></div>
+    <div class="small-logo">
+        <span class="text-primary">DIPL-AEPS</span>
+    </div>
+    <form role="search" class="navbar-form-custom" method="post" action="#">
+        <div class="form-group">
+            <input type="text" placeholder="" class="form-control" name="search">
+        </div>
+    </form>
+    <div class="mobile-menu">
+        <button type="button" class="navbar-toggle mobile-menu-toggle" data-toggle="collapse" data-target="#mobile-collapse">
+            <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="collapse mobile-navbar" id="mobile-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a class="" href="login.html">Login</a>
+                </li>
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
+                <li>
+                    <a class="" href="profile.html">Profile</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="navbar-right">
+        <ul class="nav navbar-nav no-borders">
+            <!--<li class="dropdown">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                    <i class="pe-7s-speaker"></i>
+                </a>
+                <ul class="dropdown-menu hdropdown notification animated flipInX">
+                    <li>
+                        <a>
+                            <span class="label label-success">NEW</span> It is a long established.
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="label label-warning">WAR</span> There are many variations.
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="label label-danger">ERR</span> Contrary to popular belief.
+                        </a>
+                    </li>
+                    <li class="summary"><a href="#">See all notifications</a></li>
+                </ul>
+            </li>-->
+             <?php if($user->vendor->portal_id=='V2'): ?>
+
+            <?php if( $user->vendor->parent_id != 1024 && $user->vendor->parent_id != 8130 && $user->id != 1024 && $user->id != 8130 && $user->vendor->parent_id != 16337 && $user->id != 16337 && $user->vendor->parent_id != 16335 && $user->id != 16335 && $user->id != 7975 && $user->vendor->parent_id != 7975 && $user->vendor->parent_id != 12215 && $user->vendor->parent_id != 17556 && $user->id != 17556 && $user->user_id != 10497 && $user->vendor->user_id != 2011 && $user->vendor->parent_id != 2011 && $user->vendor->parent_id != 10497 && $user->id != 16590 && !($domain_data == 'payments.digitalworldpaymentshub.com') && !($domain_data == 'aeps.acospay.com') && !($domain_data == 'aeps.himveda.co.in') && !($domain_data == 'wallet.reijiro.co.in') && !($domain_data == 'rb.myam-tech.com') && !($domain_data == 'rbamtech.digitalindiapayments.com') && !($domain_data == 'aeps.houseofrecharge.com') && !($domain_data == 'aepspayment.com')  && !($domain_data == 'aeps.globalinvestro.com' ) && !($domain_data == 'aadhaaratm.sewapoint.com') && !($domain_data == 'aeps.mydspl.com') && !($domain_data == 'service.aepsmoney.com') && !($domain_data == 'aeps.veeportal.com' && $user->vendor->parent_id != 3)): ?> 
+
+            <li class="dropdown">
+                <a class="dropdown-toggle" title="Services" href="#" data-toggle="dropdown">
+                    <i class="pe-7s-keypad"></i>
+                </a>
+
+                <div class="dropdown-menu hdropdown bigmenu animated flipInX">
+                    <?php if($domain_data == 'aeps.mysuravi.com' || $domain_data == 'aeps.lrprch.in' || $domain_data == 'aeps.manjilgroup.com' || $domain_data == 'aeps.indiapaysolution.com' || $domain_data == 'samriddhifoundation.net.in' || $domain_data == 'paybank.primagemarketing.com' || $domain_data == 'aeps.amenitiesservices.in'): ?>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <a href="<?php echo $dmt; ?>"
+                                        <?php if($dmt=="#") { ?>ng-click="alertDisable()" <?php } ?>
+                                        style="cursor: pointer;">
+                                    <i class="fa fa-inr text-info" style="font-weight: normal;font-size: 40px;line-height: 46px;"></i>
+                                    <h5>DMT</h5>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <?php else: ?>    
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <a href="<?php echo $dmt; ?>"
+                                        <?php if($dmt=="#") { ?>ng-click="alertDisable()" <?php } ?>
+                                        style="cursor: pointer;">
+                                    <i class="fa fa-inr text-info" style="font-weight: normal;font-size: 40px;line-height: 46px;"></i>
+                                    <h5>DMT</h5>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/">
+                                    <i class="fa fa-id-card-o text-warning" style="font-weight: normal;font-size: 40px;line-height: 46px;color: #fab50f;"></i>
+                                    <h5>AEPS</h5>
+                                </a>
+                            </td>
+                            <td>
+                                <?php if($user->vendor->parent_id != 3971 && $user->id != 3971): ?>
+                                <a href="<?php echo $cpt; ?>"
+                                        <?php if($cpt=="#") { ?>ng-click="alertDisable()" <?php } ?>
+                                        style="cursor: pointer;">
+                                    <i class="pe pe-7s-news-paper text-danger"></i>
+                                    <h5>Bill Pay</h5>
+                                </a>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="/">
+                                    <i class="fa fa-hand-pointer-o text-success" style="font-size:  34px;line-height: 46px;color: #d62736;"></i>
+                                    <h5>Aadhaar Pay</h5>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/">
+                                    <i class="pe pe-7s-diskette text-success"></i>
+                                    <h5>BBPS</h5>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="<?php echo $irctc; ?>"
+                                        <?php if($irctc=="#") { ?>ng-click="alertDisable()" <?php } ?>
+                                        >
+                                    <i class="fa fa-train text-success"></i>
+                                    <h5>IRCTC</h5>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <?php endif; ?>
+                </div>
+            </li>
+            <?php endif; ?>
+
+            <?php else: ?>
+
+<li class="dropdown">
+                <a class="dropdown-toggle" title="Services" href="#" data-toggle="dropdown">
+                    <i class="pe-7s-keypad"></i>
+                </a>
+
+                <div class="dropdown-menu hdropdown bigmenu animated flipInX">
+                    
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <a href="http://payaeps.digitalindiapayments.com:8021/services"
+                                       
+                                        style="cursor: pointer;">
+                                    <i class="fa fa-inr text-info" style="font-weight: normal;font-size: 40px;line-height: 46px;"></i>
+                                    <h5>SERVICE</h5>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+
+
+
+            <?php endif; ?>
+
+            <!-- <li class="dropdown">
+                <a class="dropdown-toggle label-menu-corner" href="#" data-toggle="dropdown">
+                    <i class="pe-7s-mail"></i>
+                    <span class="label label-success">4</span>
+                </a>
+                <ul class="dropdown-menu hdropdown animated flipInX">
+                    <div class="title">
+                        You have 4 new messages
+                    </div>
+                    <li>
+                        <a>
+                            It is a long established.
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            There are many variations.
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            Lorem Ipsum is simply dummy.
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            Contrary to popular belief.
+                        </a>
+                    </li>
+                    <li class="summary"><a href="#">See All Messages</a></li>
+                </ul>
+            </li> -->
+            <!-- <li>
+                <a href="#" id="sidebar" class="right-sidebar-toggle">
+                    <i class="pe-7s-upload pe-7s-news-paper"></i>
+                </a>
+            </li> -->
+            <li class="dropdown">
+                <a title="Logout" href="/logout">
+                    <!-- <i class="pe-7s-upload pe-rotate-90"></i> -->
+                    <i class="pe-7s-power" style="color: red;"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
