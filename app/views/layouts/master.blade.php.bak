@@ -1,0 +1,173 @@
+<?php use Acme\Auth\Auth; ?>
+<!DOCTYPE html>
+<html ng-app="SonaCoinApp" lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>SonaCoin</title>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/styles.css">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<style>
+		.ng-submitted .err.ng-invalid {
+			border: 1px solid red;
+		}
+	</style>
+</head>
+
+<body class="ng-cloak" ng-controller="MainCtrl">
+	<!-- Navigation -->
+	<nav class="navbar navbar-inverse" role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header col-md-4">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a style="margin-top: 10px;" class="navbar-brand" href="/#/">
+					<img src="/images/logo.png" alt="">
+				</a>
+				<div class="clearfix"></div>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			@include('partials.main-nav')
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+	<!-- TOP BAR: -->
+	<div class="top-bar">
+		<div class="container">
+			<div class="col-md-4">
+				<h1>Dashboard</h1>
+			</div>
+			<div class="col-md-8 pull-right">
+				<div class="top-bar-balance">
+					<!--<h2>Hi <%= user.name.charAt(0).toUpperCase() + user.name.slice(1) %> :</h2>
+					<h2>Your Gold Balance is @{{(active_user_profile.gold.freely + active_user_profile.gold.deposit + active_user_profile.gold.encumbered) | number: 2}} gm</h2>
+					<h2>Your Cash Balance is @{{active_user_profile.cash || 0 | currency: 'Rs. ': 0 }}</h2>-->
+					<h2>Live price of gold is: @{{livePrice | currency: 'Rs. '}}</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- TOP BAR:end -->
+
+	<!-- Page Content -->
+	<div class="main-cont">
+		@include('partials.application-nav')
+		<div class="cont-R">
+			<div class="cont-R-main">
+        @section('content')
+        @show
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+
+	<div class="footer">
+		<div class="container">
+			<div class="col-md-12">
+				<div class="col-md-2">
+					<ul>
+						<h3>DOCUMENTATION</h3>
+						<li><a href="#">FAQ</a>
+						</li>
+						<li><a href="#">Terms & Conditions</a>
+						</li>
+						<li><a href="#">Privacy Policy</a>
+						</li>
+						<li><a href="#">KYC & Anti Fraud</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-md-2">
+					<ul>
+						<h3>HOW IT WORKS</h3>
+						<li><a href="#" target="_blank">How to use</a>
+						</li>
+						<li><a href="#">for Beginners</a>
+						</li>
+						<li><a href="#" target="_blank">Practice Trading</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-md-2">
+					<ul>
+						<h3>TOOLS</h3>
+						<li><a href="#">Trade API</a>
+						</li>
+						<li><a href="#" target="_blank">Block Explorer</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-md-2">
+					<ul>
+						<h3>GOLD CHAIN</h3>
+						<li><a href="#" target="_blank">Our Home Page</a>
+						</li>
+						<li><a href="#" target="_blank">Blog</a>
+						</li>
+						<li><a href="#">Contact & Support</a>
+						</li>
+						<li><a href="#">About Us</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-md-4">
+					<a class="twitter-timeline" href="https://twitter.com/anil_dukkipatty" data-chrome="nofooter transparent noborders" data-widget-id="694333031482540032" width="300" height="140">Tweets by @GoldCoin</a>
+					<script>
+						! function(d, s, id) {
+							var js, fjs = d.getElementsByTagName(s)[0],
+								p = /^http:/.test(d.location) ? 'http' : 'https';
+							if (!d.getElementById(id)) {
+								js = d.createElement(s);
+								js.id = id;
+								js.src = p + "://platform.twitter.com/widgets.js";
+								fjs.parentNode.insertBefore(js, fjs);
+							}
+						}(document, "script", "twitter-wjs");
+					</script>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<p> © 2015 - 2016</p>
+			</div>
+
+			<div class="col-md-3 mrlft col-md-offset-4">
+				<a href="#" target="_blank"> <i class="fa fa-facebook noleft"></i>
+				</a>
+				<a href="#" target="_blank"> <i class="fa fa-google-plus"></i>
+				</a>
+				<a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
+			</div>
+		</div>
+	</div>
+	</div>
+	<script>
+		var me = {{Auth::user()}}
+	</script>
+	<script src="/components/jquery/dist/jquery.min.js"></script>
+	<script src="/components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/dist/app.js"></script>
+</body>
+
+</html>

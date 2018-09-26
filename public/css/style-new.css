@@ -1,0 +1,10 @@
+.c-red { color: #e74c3c; }
+.c-orange { color: #ffb606; }
+.c-green { color: #62cb31; }
+.c-yellow { color: #ffb606; }
+.c-blue { color: #3498db; }
+.c-blue-dark { color: #34495e; }
+.c-purple { color: #9b59b6; }
+#neft-transactions,#imps-transactions { width: 100px; height: auto; margin: auto; }
+svg { height:180px; }
+.c3-chart-arc text { font-size: 9px !important; }

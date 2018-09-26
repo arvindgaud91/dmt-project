@@ -1,0 +1,93 @@
+.multiselect-form-control button {
+	width: 100%;
+}
+p.err-mark {
+	color: #F2596D;
+}
+img.err-mark {
+	border: 1px #F2596D solid;
+}
+div.err-mark button {
+	border: 1px solid red;
+}
+.ng-submitted .err.ng-invalid {
+	border: 1px solid red;
+}
+.fingerImg {
+	border: 1px #000 solid;
+	height: 250px;
+	width: 100%;
+	border-radius: 4px;
+}
+.dashboard-views .seperator {
+	border-right: 1px solid #ccc;
+	border-radius: 0;
+}
+.dashboard-views .widget.widget-tile .data-info {
+	text-align: left;
+}
+.search .form-control {
+	height: auto;
+	padding: 8px 10px;
+}
+.search label {
+	height: auto;
+	padding: 8px 0px;
+	text-align: right;
+	display: block;
+}
+.search-sender .input-group-addon {
+	padding: 0;
+	margin: 0;
+	background: transparent;
+	border: 0;
+}
+.search-sender .form-control {
+	height: auto;
+	padding: 4px 10px;
+}
+.overlay, .popup {
+	/*display: none;*/
+}
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.8);
+	height: 100%;
+	width: 100%;
+	z-index: 9999;
+}
+.popup {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 99999;
+	background: #fff;
+	padding: 20px 60px;
+	width: auto;
+	height: auto;
+	border-radius: 5px;
+	text-align: center;
+}
+.dashboard h3{
+	font-size: 18px;
+}
+.panel-heading, .panel-heading .title{font-size: 15px;}
+.err-mark:before {
+    content: "\f071";
+    font-family: 'FontAwesome';
+    margin: 0 4px;
+}
+@media (max-width:480px) {
+	.be-fixed-sidebar {
+		padding-top: 0;
+	}
+	.be-left-sidebar {
+		display: none;
+	}
+	.be-top-header {
+		display: none;
+	}
+}

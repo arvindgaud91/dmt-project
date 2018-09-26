@@ -1,0 +1,44 @@
+.multiselect-form-control button {
+	width: 100%;
+}
+p.err-mark {
+	color: #F2596D;
+}
+img.err-mark {
+	border: 1px #F2596D solid;
+}
+div.err-mark button {
+	border: 1px solid red;
+}
+.ng-submitted .err.ng-invalid {
+	border: 1px solid red;
+}
+.fingerImg {
+	border: 1px #000 solid;
+	height: 250px;
+	width: 100%;
+	border-radius: 4px;
+}
+.dashboard-views .seperator {
+	border-right: 1px solid #ccc;
+	border-radius: 0;
+}
+.dashboard-views .widget.widget-tile .data-info {
+	text-align: left;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button{padding: 0;margin-left: 0;border: 0 !important;}
+.fixedHeader-floating{
+	top:55px !important;
+	box-shadow: 0px 1px 3px 0px #ccc;
+}
+@media (max-width:480px) {
+	.be-fixed-sidebar {
+		padding-top: 0;
+	}
+	.be-left-sidebar {
+		display: none;
+	}
+	.be-top-header {
+		display: none;
+	}
+}
